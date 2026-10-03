@@ -1,0 +1,221 @@
+<main class="admin-shell">
+  <header class="admin-header">
+    <div>
+      <a routerLink="/" class="monogram">TM</a>
+      <h1>Our guestbook</h1>
+      <p class="muted">
+        {{ invitations().length }} invitations, one beautiful day.
+      </p>
+    </div>
+    <nav>
+      <a routerLink="/preview" class="text-link">Preview</a
+      ><button class="text-link" (click)="refresh()" [disabled]="loading()">
+        Refresh</button
+      ><button class="text-link" (click)="logout()">Sign out</button>
+    </nav>
+  </header>
+  <div class="stats">
+    @for (stat of stats(); track stat.label) {
+      <div>
+        <span>{{ stat.value }}</span>
+        <p>{{ stat.label }}</p>
+      </div>
+    }
+  </div>
+  @if (error()) {
+    <div role="alert" class="notice form-error">
+      {{ error() }} <button class="text-link" (click)="refresh()">Retry</button>
+    </div>
+  }
+  @if (notice()) {
+    <p role="status" class="notice">{{ notice() }}</p>
+  }
+  <div class="toolbar">
+    <label class="search"
+      >Search guests<input
+        type="search"
+        placeholder="Name or family…"
+        [ngModel]="search()"
+        (ngModelChange)="search.set($event)" /></label
+    ><label
+      >Response<select
+        [ngModel]="filter()"
+        (ngModelChange)="filter.set($event)"
+      >
+        <option value="all">All responses</option>
+        <option value="pending">Awaiting reply</option>
+        <option value="attending">Attending</option>
+        <option value="declined">Declined</option>
+      </select></label
+    ><button class="button" (click)="create()">+ New invitation</button>
+  </div>
+  @if (showForm()) {
+    <section class="admin-panel editor" aria-labelledby="editor-title">
+      <h2 id="editor-title">
+        {{ editing() ? "Edit invitation" : "A new invitation" }}
+      </h2>
+      <form [formGroup]="form" (ngSubmit)="save()" class="admin-form">
+        <label
+          >Guest / display name<input
+            formControlName="displayName"
+            maxlength="120"
+            placeholder="Ahmed & Sara"
+            required /></label
+        ><label
+          >People invited<input
+            type="number"
+            formControlName="invitedCount"
+            min="1"
+            max="100"
+            step="1"
+            required
+        /></label>
+        <p class="muted">
+          Use a first name, couple, or family name. The private link is
+          generated automatically.
+        </p>
+        @if (form.invalid && form.touched) {
+          <p class="form-error">
+            Enter a name and a whole guest count from 1 to 100.
+          </p>
+        }
+        <div class="actions">
+          <button class="button" [disabled]="form.invalid || busy()">
+            {{ busy() ? "Saving…" : "Save invitation" }}</button
+          ><button
+            type="button"
+            class="text-link"
+            [disabled]="busy()"
+            (click)="showForm.set(false)"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </section>
+  }
+  @if (deleting(); as guest) {
+    <section
+      class="delete-confirm admin-panel"
+      role="alertdialog"
+      aria-labelledby="delete-title"
+      aria-describedby="delete-description"
+    >
+      <h2 id="delete-title">Delete {{ guest.displayName }}?</h2>
+      <p id="delete-description">
+        Their invitation and response will be removed permanently. Their private
+        link will stop working.
+      </p>
+      <div class="actions">
+        <button class="button" (click)="remove()" [disabled]="busy()">
+          {{ busy() ? "Deleting…" : "Delete invitation" }}</button
+        ><button
+          class="text-link"
+          (click)="deleting.set(null)"
+          [disabled]="busy()"
+        >
+          Keep invitation
+        </button>
+      </div>
+    </section>
+  }
+  @if (loading()) {
+    <p class="notice" role="status">Loading your guestbook…</p>
+  } @else {
+    <div class="table-wrap">
+      <table>
+        <caption class="sr-only">
+          Wedding invitations and RSVP responses
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Guest</th>
+            <th scope="col">Invited</th>
+            <th scope="col">Response</th>
+            <th scope="col">Opened</th>
+            <th scope="col">Attending</th>
+            <th scope="col">Message & dates</th>
+            <th scope="col">Invitation</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (guest of filtered(); track guest.token) {
+            <tr>
+              <td>
+                <strong>{{ guest.displayName }}</strong>
+                <div class="row-actions">
+                  <button (click)="edit(guest)">Edit</button
+                  ><button (click)="deleting.set(guest)">Delete</button>
+                </div>
+              </td>
+              <td>{{ guest.invitedCount }}</td>
+              <td>
+                <span
+                  class="status"
+                  [class.accepted]="guest.rsvp.status === 'attending'"
+                  >{{ statusLabel(guest.rsvp.status) }}</span
+                >
+              </td>
+              <td>
+                <span
+                  class="status opening-status"
+                  [class.opened]="guest.openedAt !== null"
+                  >{{ guest.openedAt ? "Opened" : "Not opened" }}</span
+                >
+                @if (guest.openedAt) {
+                  <small class="opened-date">{{
+                    guest.openedAt | date: "medium"
+                  }}</small>
+                }
+              </td>
+              <td>{{ guest.rsvp.attendingCount }}</td>
+              <td class="message-cell">
+                <p>{{ guest.rsvp.message || "—" }}</p>
+                <small>Created {{ guest.createdAt | date: "mediumDate" }}</small
+                ><small
+                  >Reply
+                  {{
+                    guest.rsvp.updatedAt
+                      ? (guest.rsvp.updatedAt | date: "medium")
+                      : "not received"
+                  }}</small
+                >
+              </td>
+              <td>
+                <div class="share-actions">
+                  <button (click)="copy(guest)">Copy link</button
+                  ><a
+                    [href]="whatsapp(guest)"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >WhatsApp ↗</a
+                  >
+                </div>
+                <details>
+                  <summary>Private URL</summary>
+                  <a
+                    class="private-url"
+                    [href]="url(guest)"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >{{ url(guest) }}</a
+                  >
+                </details>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7" class="empty">
+                {{
+                  invitations().length
+                    ? "No invitations match your search."
+                    : "Your guestbook is waiting. Create your first invitation."
+                }}
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</main>

@@ -1,0 +1,186 @@
+/* Separate entry and scroll transforms keep the fan reversible after it settles. */
+.invitation-fan {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: var(--fan-opacity, 1);
+}
+.is-opening .invitation-fan,
+.is-open .invitation-fan {
+  visibility: visible;
+}
+.fan-photo {
+  position: absolute;
+  top: 39%;
+  left: 50%;
+  width: min(25vw, 29svh, 290px);
+  --side: -1;
+  transform: translate(-50%, -50%)
+    translateX(
+      calc(
+        var(--side) * (min(25vw, 29svh, 290px) * 0.94 + var(--fan-exit) * 30vw)
+      )
+    )
+    translateY(calc(var(--fan-exit) * -20svh))
+    rotate(calc(var(--side) * (9deg + var(--fan-exit) * 14deg)));
+  will-change: transform;
+}
+.fan-photo-right {
+  --side: 1;
+}
+.fan-print {
+  margin: 0;
+  padding: 9px 9px 0;
+  background: #fff8eb;
+  border: 1px solid #d6c3a1;
+  box-shadow:
+    0 2px 2px #58342625,
+    0 15px 35px #36190d40;
+}
+.fan-print img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.fan-print figcaption {
+  padding: 12px 0 14px;
+  color: #78563e;
+  text-align: center;
+  font:
+    italic clamp(0.55rem, 1.1vw, 0.85rem) Georgia,
+    serif;
+}
+.fan-note-travel {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  width: min(28vw, 33svh, 330px);
+  transform: translate(-50%, -50%) translateY(calc(var(--fan-exit) * -9svh))
+    scale(calc(1 + var(--fan-exit) * 0.6));
+  will-change: transform;
+}
+.fan-note {
+  padding: clamp(22px, 3.5svh, 40px) 12px;
+  background: var(--ivory);
+  outline: 1px solid #b78e5755;
+  outline-offset: -9px;
+  box-shadow:
+    0 2px 3px #58342622,
+    0 20px 50px #36190d50;
+  text-align: center;
+}
+.fan-note .eyebrow {
+  font-size: clamp(0.42rem, 0.65vw, 0.6rem);
+  letter-spacing: 0.18em;
+  color: var(--terracotta);
+}
+.fan-names {
+  font:
+    clamp(1.8rem, 4vw, 3.6rem)/0.95 Georgia,
+    serif;
+  color: var(--orange);
+  margin: 22px 0;
+  letter-spacing: -0.05em;
+}
+.fan-names i {
+  display: block;
+  font-size: 0.5em;
+  color: var(--chocolate);
+  margin: 8px 0;
+}
+.fan-rule {
+  display: block;
+  height: 1px;
+  width: 30px;
+  background: var(--gold);
+  margin: 18px auto;
+}
+.fan-date {
+  font-size: clamp(0.5rem, 0.85vw, 0.7rem);
+  letter-spacing: 0.18em;
+}
+.fan-signoff {
+  font:
+    italic clamp(0.65rem, 1vw, 0.9rem) Georgia,
+    serif;
+  margin: 14px 0 0;
+  color: #796044;
+}
+.is-opening .fan-print,
+.is-open .fan-print {
+  animation: fan-arrive 1.1s 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.is-opening .fan-photo-right .fan-print,
+.is-open .fan-photo-right .fan-print {
+  animation-delay: 1.12s;
+}
+.is-opening .fan-note,
+.is-open .fan-note {
+  animation: fan-arrive 1.15s 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes fan-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(55svh) rotate(calc(var(--side, 0) * -16deg))
+      scale(0.65);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 640px) {
+  .fan-photo {
+    width: 40vw;
+    top: 34%;
+    transform: translate(-50%, -50%)
+      translateX(calc(var(--side) * (23vw + var(--fan-exit) * 35vw)))
+      translateY(calc(var(--fan-exit) * -18svh))
+      rotate(calc(var(--side) * (8deg + var(--fan-exit) * 14deg)));
+  }
+  .fan-print {
+    padding: 5px 5px 0;
+  }
+  .fan-print figcaption {
+    font-size: 0.52rem;
+    padding: 9px 0;
+  }
+  .fan-note-travel {
+    width: 53vw;
+    top: 63%;
+  }
+  .fan-note {
+    padding: 26px 10px;
+  }
+  .fan-names {
+    font-size: clamp(1.8rem, 8vw, 2.6rem);
+    margin: 18px 0;
+  }
+}
+@media (prefers-reduced-motion: reduce), (max-height: 600px) {
+  .invitation-fan {
+    display: none;
+  }
+  .is-open .invitation-fan {
+    display: flex;
+    position: relative;
+    opacity: 1;
+    padding: 40px 5vw;
+    gap: 16px;
+    justify-content: center;
+  }
+  .fan-photo,
+  .fan-photo-right {
+    position: static;
+    width: min(40vw, 240px);
+    transform: none;
+  }
+  .fan-print {
+    animation: none !important;
+  }
+  .fan-note-travel {
+    display: none;
+  }
+}

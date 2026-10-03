@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.angular/
+.env*
+!.env.example
+*debug.log*
+playwright-report/
+test-results/
+.firebase/
+.firebaserc
+src/app/config/firebase.local.ts

@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+ match /databases/{database}/documents {
+  function admin() { return request.auth != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid)) && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.enabled == true; }
+  function tokenValid(token) { return token.matches('^[a-f0-9]{64}$'); }
+  function validRsvp(r, count) { return r.keys().hasAll(['status','attendingCount','message','updatedAt']) && r.keys().hasOnly(['status','attendingCount','message','updatedAt']) && r.status in ['attending','declined'] && r.attendingCount is int && (r.status == 'attending' ? r.attendingCount >= 1 && r.attendingCount <= count : r.attendingCount == 0) && r.message is string && r.message.size() <= 1000 && r.updatedAt == request.time; }
+  function validInvitation(d) { return d.keys().hasAll(['displayName','invitedCount','createdAt','updatedAt','rsvp']) && d.keys().hasOnly(['displayName','invitedCount','createdAt','updatedAt','openedAt','rsvp']) && d.displayName is string && d.displayName.size() > 0 && d.displayName.size() <= 120 && d.invitedCount is int && d.invitedCount >= 1 && d.invitedCount <= 100 && d.createdAt is timestamp && d.updatedAt == request.time && (!d.keys().hasAny(['openedAt']) || d.openedAt == null || d.openedAt is timestamp); }
+  match /admins/{uid} {
+   allow get: if request.auth != null && request.auth.uid == uid;
+   allow list, write: if false;
+  }
+  // The document ID is a 256-bit bearer capability. No guest queries are allowed.
+  // Only guest-visible fields belong here. Possession of the URL grants RSVP access.
+  match /invitations/{token} {
+   allow get: if tokenValid(token);
+   allow list: if admin();
+   allow create: if admin() && tokenValid(token) && validInvitation(request.resource.data) && request.resource.data.createdAt == request.time && request.resource.data.openedAt == null && request.resource.data.rsvp == {'status':'pending','attendingCount':0,'message':'','updatedAt':null};
+   allow update: if tokenValid(token) && validInvitation(request.resource.data) && request.resource.data.createdAt == resource.data.createdAt && (
+    (admin() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName','invitedCount','updatedAt']) && request.resource.data.invitedCount >= resource.data.rsvp.attendingCount)
+    || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['rsvp','updatedAt']) && validRsvp(request.resource.data.rsvp,resource.data.invitedCount))
+    || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['openedAt','updatedAt']) && (!resource.data.keys().hasAny(['openedAt']) || resource.data.openedAt == null) && request.resource.data.openedAt == request.time)
+   );
+   allow delete: if admin();
+  }
+ }
+}

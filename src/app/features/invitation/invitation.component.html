@@ -1,0 +1,465 @@
+@if (loading()) {
+  <main class="state-screen" aria-live="polite">
+    <span class="monogram loading-mark">TM</span>
+    <p class="eyebrow">A little moment, a lifetime of love</p>
+    <p>Opening your invitation…</p>
+  </main>
+} @else if (error()) {
+  <main class="state-screen">
+    <span class="monogram">TM</span>
+    <h1>A little pause</h1>
+    <p role="alert">{{ error() }}</p>
+    <button class="button" (click)="load()">Try again</button>
+  </main>
+} @else {
+  <main class="invitation-main" [class.invitation-open]="opened()">
+    <section
+      id="welcome"
+      class="opening-chapter"
+      scrollScene="opening"
+      [class.is-opening]="opening()"
+      [class.is-open]="opened()"
+      aria-label="Open our invitation"
+    >
+      <div class="opening-viewport">
+        <header
+          class="scene-heading"
+          [attr.aria-hidden]="opened() || opening() ? 'true' : null"
+        >
+          <span class="eyebrow">A LETTER TO OUR FAVOURITE PEOPLE</span>
+          <p>{{ config.bride }} <i>&</i> {{ config.groom }}</p>
+        </header>
+        <div
+          class="envelope-travel"
+          [attr.aria-hidden]="opened() ? 'true' : null"
+        >
+          <div class="envelope-camera">
+            <div class="envelope-space">
+              <button
+                class="envelope"
+                (click)="open()"
+                [disabled]="opening() || opened()"
+                aria-label="Open Tasneem and Mostafa’s wedding invitation"
+              >
+                <span class="envelope-back"></span>
+                <span class="invitation-card" aria-hidden="true"></span>
+                <span class="envelope-front"></span
+                ><span class="envelope-flap"
+                  ><span class="flap-lining"></span
+                ></span>
+                <picture aria-hidden="true"
+                  ><source
+                    media="(max-width: 640px)"
+                    srcset="/media/stationery/envelope-paper-mobile.webp"
+                  />
+                  <img
+                    class="envelope-portrait"
+                    src="/media/stationery/envelope-paper.webp"
+                    alt=""
+                    width="1596"
+                    height="985"
+                    fetchpriority="high"
+                    aria-hidden="true"
+                    draggable="false"
+                  />
+                </picture>
+                <span class="seal" aria-hidden="true"
+                  ><img
+                    src="/media/stationery/wax-seal-tm.webp"
+                    alt=""
+                    width="480"
+                    height="480"
+                    fetchpriority="high"
+                    draggable="false"
+                /></span>
+                <span class="envelope-caption">with love, for you</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="invitation-fan"
+          [attr.aria-hidden]="!opened() ? 'true' : null"
+        >
+          <div class="fan-photo fan-photo-left">
+            <figure class="fan-print">
+              <img
+                src="/media/memories/memory-1.webp"
+                alt="A candid celebration: the couple beneath flowers, with a smiling friend giving two thumbs up."
+                width="720"
+                height="1078"
+                draggable="false"
+              />
+              <figcaption>the joy of being together</figcaption>
+            </figure>
+          </div>
+          <div class="fan-photo fan-photo-right">
+            <figure class="fan-print">
+              <img
+                src="/media/memories/memory-2.webp"
+                alt="The couple sharing a glance as a friend smiles and gives a thumbs up in front."
+                width="720"
+                height="1078"
+                draggable="false"
+              />
+              <figcaption>our favourite kind of memories</figcaption>
+            </figure>
+          </div>
+          <div class="fan-note-travel">
+            <div class="fan-note">
+              <p class="eyebrow">WE’RE GETTING MARRIED</p>
+              <p class="fan-names">
+                {{ config.bride }}<i>&</i>{{ config.groom }}
+              </p>
+              <span class="fan-rule"></span>
+              <p class="fan-date">{{ config.shortDate }}</p>
+              <p class="fan-signoff">and you’re part of our story</p>
+            </div>
+          </div>
+        </div>
+        @if (opened()) {
+          <div class="welcome-layer">
+            <div class="welcome-frame">
+              <p class="eyebrow welcome-prelude">
+                TOGETHER IS A BEAUTIFUL PLACE TO BE
+              </p>
+              <p class="guest-name">
+                @if (invitation(); as guest) {
+                  {{
+                    guest.displayName === "Dear friends"
+                      ? guest.displayName
+                      : "Dear " + guest.displayName
+                  }},
+                } @else {
+                  To our favourite people,
+                }
+              </p>
+              <h1 id="welcome-heading" tabindex="-1">
+                <span class="bride-name">{{ config.bride }}</span
+                ><span class="ampersand">&</span
+                ><span class="groom-name">{{ config.groom }}</span>
+              </h1>
+              <div class="welcome-ending">
+                <div class="date-rule">
+                  <span></span>
+                  <p>{{ config.shortDate }}</p>
+                  <span></span>
+                </div>
+                <p class="welcome-note">
+                  A day to remember.<br />A lifetime to look forward to.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="unfold-navigation">
+            <a class="skip-story" [href]="pagePath + '#our-invitation'"
+              >Skip to invitation <span aria-hidden="true">↗</span></a
+            ><button
+              id="unfold-cue"
+              class="unfold-cue"
+              (click)="continueStory()"
+            >
+              <span>SCROLL TO UNFOLD</span
+              ><span class="scroll-track" aria-hidden="true"
+                ><span></span
+              ></span></button
+            ><span class="chapter-index">01 / 04</span>
+          </div>
+        } @else {
+          <div class="opening-copy">
+            <p class="eyebrow">
+              {{
+                opening()
+                  ? "OUR NEXT CHAPTER BEGINS"
+                  : "SOMETHING BEAUTIFUL IS INSIDE"
+              }}
+            </p>
+            <span>{{
+              opening() ? "A moment, just for you" : "Tap the seal to begin"
+            }}</span>
+          </div>
+        }
+        <footer
+          class="scene-footer"
+          [attr.aria-hidden]="opened() || opening() ? 'true' : null"
+        >
+          <span
+            >{{ dateParts.day }} {{ dateParts.month | uppercase }}
+            {{ dateParts.year }}</span
+          ><span>{{ config.address | uppercase }}</span>
+        </footer>
+      </div>
+    </section>
+    @if (opened()) {
+      @if (preview) {
+        <aside class="preview-banner">
+          Invitation preview · Responses here are a demonstration.
+        </aside>
+      }
+      <nav class="invitation-nav" aria-label="Invitation">
+        <a [href]="pagePath + '#welcome'" class="monogram">TM</a>
+        <div>
+          <a [href]="pagePath + '#details'">The day</a
+          ><a [href]="pagePath + '#location'">The place</a
+          ><a [href]="pagePath + '#rsvp'">RSVP</a>
+        </div>
+      </nav>
+      <section class="vow-chapter" id="our-invitation" scrollScene="vow">
+        <div class="vow-sticky">
+          <span class="chapter-label eyebrow">01 — THE INVITATION</span
+          ><span class="vow-watermark" aria-hidden="true">&</span>
+          <div class="vow-content">
+            <h2 class="vow-title">
+              <span class="vow-line line-0">Some things</span
+              ><span class="vow-line line-1">are simply</span
+              ><span class="vow-line line-2"><i>meant to be.</i></span>
+            </h2>
+            <div class="vow-bottom">
+              <p class="invitation-message">{{ config.invitationMessage }}</p>
+              <p class="small-script">
+                And it wouldn’t be the same without you.
+              </p>
+            </div>
+          </div>
+          <span class="chapter-bottom eyebrow"
+            >A LIFETIME OF LOVE STARTS WITH ONE DAY</span
+          >
+        </div>
+      </section>
+      @if (config.photos.length) {
+        <div class="couple-photos section" scrollScene="reveal">
+          @for (photo of config.photos.slice(0, 2); track photo.src) {
+            <img
+              [src]="photo.src"
+              [alt]="photo.alt"
+              loading="lazy"
+              width="640"
+              height="800"
+            />
+          }
+        </div>
+      }
+      <section class="date-chapter" id="details" scrollScene="date">
+        <div class="details-section section">
+          <span class="chapter-label eyebrow">02 — THE DAY</span>
+          <div class="date-copy">
+            <p class="eyebrow">SAVE THE DATE</p>
+            <h2>One day.<br />Our forever.</h2>
+            <p>
+              We’re counting down to a celebration<br />filled with love,
+              laughter, and you.
+            </p>
+          </div>
+          <div class="date-stationery">
+            <span class="eyebrow">{{ dateParts.month | uppercase }}</span
+            ><span class="day-number">{{ dateParts.day }}</span
+            ><span class="date-weekday"
+              >{{ dateParts.weekday | uppercase }} · {{ dateParts.year }}</span
+            >
+            <div class="thin-rule"></div>
+            <p>{{ config.time }}</p>
+            <p class="venue-name">{{ config.venue }}</p>
+            <p>{{ config.address }}</p>
+            <button
+              type="button"
+              class="calendar-button"
+              (click)="downloadCalendar()"
+            >
+              <span aria-hidden="true">＋</span> Add to calendar
+            </button>
+          </div>
+        </div>
+      </section>
+      <section
+        class="countdown-section section"
+        scrollScene="reveal"
+        aria-label="Countdown to our wedding"
+      >
+        <p class="eyebrow">EVERY MOMENT BRINGS US CLOSER</p>
+        <div class="countdown">
+          @for (value of remaining(); track $index) {
+            <div>
+              <span>{{ value.toString().padStart(2, "0") }}</span
+              ><small>{{ units[$index] }}</small>
+            </div>
+          }
+        </div>
+        @if (
+          remaining()[0] === 0 &&
+          remaining()[1] === 0 &&
+          remaining()[2] === 0 &&
+          remaining()[3] === 0
+        ) {
+          <p>Our forever has begun.</p>
+        }
+      </section>
+      <section
+        class="location-section section reveal"
+        id="location"
+        scrollScene="reveal"
+      >
+        <div class="venue-art" aria-hidden="true">
+          <span class="venue-initial">M<span>R</span></span
+          ><span class="eyebrow">MOUNTAIN ROSE</span
+          ><span class="venue-coordinate"
+            >A place for a beautiful beginning</span
+          >
+        </div>
+        <div class="location-copy">
+          <p class="eyebrow">03 — THE PLACE</p>
+          <h2>{{ config.venue }}</h2>
+          <p>{{ config.address }}</p>
+          <p class="location-description">
+            Under the evening sky,<br />surrounded by the people we love.
+          </p>
+          <a
+            class="text-link"
+            [href]="config.mapsUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Open in Google Maps <span aria-hidden="true">↗</span></a
+          >
+        </div>
+      </section>
+      <section
+        class="rsvp-section section reveal"
+        id="rsvp"
+        scrollScene="reveal"
+      >
+        <p class="eyebrow">04 — A SEAT SAVED FOR YOU</p>
+        <h2>Will you be joining us?</h2>
+        @if (invitation(); as guest) {
+          <p class="rsvp-intro">
+            {{ guest.displayName }}, we hope to see you there.
+          </p>
+          @if (saved()) {
+            <div class="rsvp-success" role="status">
+              <span class="monogram">TM</span>
+              <h3>
+                {{
+                  guest.rsvp.status === "attending"
+                    ? "We can't wait to celebrate with you."
+                    : "You’ll be with us in spirit."
+                }}
+              </h3>
+              <p>
+                {{
+                  preview
+                    ? "Your preview response is saved in this tab."
+                    : "Your response has been saved with love."
+                }}
+              </p>
+              <button class="text-link" (click)="saved.set(false)">
+                Change my response
+              </button>
+            </div>
+          } @else {
+            <form [formGroup]="form" (ngSubmit)="submit()" class="rsvp-form">
+              <fieldset>
+                <legend class="sr-only">Your attendance</legend>
+                <label
+                  class="response-choice"
+                  [class.selected]="form.controls.status.value === 'attending'"
+                  ><input
+                    type="radio"
+                    formControlName="status"
+                    value="attending"
+                  /><span>Joyfully accept</span
+                  ><span aria-hidden="true">♡</span></label
+                ><label
+                  class="response-choice"
+                  [class.selected]="form.controls.status.value === 'declined'"
+                  ><input
+                    type="radio"
+                    formControlName="status"
+                    value="declined"
+                  /><span>Regretfully decline</span></label
+                >
+              </fieldset>
+              @if (
+                form.controls.status.touched && form.controls.status.invalid
+              ) {
+                <p class="form-error" role="alert">
+                  Please choose your response.
+                </p>
+              }
+              @if (form.controls.status.value === "attending") {
+                <label for="attending-count"
+                  >Number attending
+                  <span class="muted"
+                    >(up to {{ guest.invitedCount }})</span
+                  ></label
+                ><select id="attending-count" formControlName="attendingCount">
+                  @for (count of counts; track count) {
+                    <option [ngValue]="count">
+                      {{ count }} {{ count === 1 ? "guest" : "guests" }}
+                    </option>
+                  }
+                </select>
+              }
+              <label for="message"
+                >Leave a message for {{ config.bride }} & {{ config.groom }}
+                <span class="muted">(optional)</span></label
+              ><textarea
+                id="message"
+                formControlName="message"
+                maxlength="1000"
+                rows="3"
+                placeholder="A little note, sent with love…"
+              ></textarea>
+              <p class="message-count">
+                {{ form.controls.message.value.length }} / 1000
+              </p>
+              @if (saveError()) {
+                <p role="alert" class="form-error">{{ saveError() }}</p>
+              }
+              <button class="button" type="submit" [disabled]="saving()">
+                {{
+                  saving()
+                    ? "Saving your response…"
+                    : guest.rsvp.status === "pending"
+                      ? "Send with love"
+                      : "Update my response"
+                }}
+                <span aria-hidden="true">↗</span>
+              </button>
+              <p class="rsvp-footnote">
+                You can return to this invitation to change your response.
+              </p>
+            </form>
+          }
+        } @else {
+          <p class="rsvp-intro">
+            Please open the personal invitation link sent to you<br />to let us
+            know you’re coming.
+          </p>
+        }
+      </section>
+      <section class="closing section" scrollScene="reveal">
+        <span class="ornament" aria-hidden="true">❦</span>
+        <p>{{ config.closingMessage }}</p>
+        <span class="eyebrow">WITH LOVE, ALWAYS</span>
+        <h2>{{ config.bride }} <i>&</i> {{ config.groom }}</h2>
+        <span class="monogram">TM</span>
+        <p class="eyebrow">{{ config.shortDate }}</p>
+      </section>
+    }
+  </main>
+  @if (opened()) {
+    <footer class="invitation-footer">
+      <span>MADE WITH LOVE, FOR YOU</span><a routerLink="/admin">Hosts</a>
+    </footer>
+    @if (config.music) {
+      <button
+        class="music-control"
+        (click)="toggleMusic()"
+        [attr.aria-label]="playing() ? 'Mute music' : 'Play music'"
+      >
+        {{ playing() ? "♫ Music on" : "♪ Music off" }}
+      </button>
+    }
+    @if (musicError()) {
+      <p class="music-notice" role="status">{{ musicError() }}</p>
+    }
+  }
+}
