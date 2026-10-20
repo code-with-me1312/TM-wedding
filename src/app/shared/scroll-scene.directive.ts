@@ -25,9 +25,7 @@ export class ScrollSceneDirective {
   constructor() {
     afterNextRender(() =>
       this.zone.runOutsideAngular(() => {
-        const media = matchMedia(
-          "(prefers-reduced-motion: reduce), (max-height: 600px)",
-        );
+        const media = matchMedia("(prefers-reduced-motion: reduce)");
         let frame = 0;
         let last = -1;
         const set = (name: string, value: number, unit = "") =>

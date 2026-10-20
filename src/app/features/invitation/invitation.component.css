@@ -26,6 +26,7 @@
   height: 310svh;
 }
 .opening-viewport {
+  --envelope-width: min(74vw, 920px, calc((100svh - 300px) * 1.62));
   position: sticky;
   top: 0;
   width: 100%;
@@ -39,6 +40,27 @@
     var(--ivory) 55%,
     #e4d4b8
   );
+}
+.opening-viewport::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: url("/media/opening-ceremony-bg.webp") center 48% / cover no-repeat;
+  opacity: 0;
+  filter: blur(5px);
+  transform: scale(1.035);
+  transition: opacity 0.7s ease;
+}
+.opening-chapter:not(.is-opening):not(.is-open) .opening-viewport::before {
+  opacity: 1;
+}
+.opening-chapter:not(.is-opening):not(.is-open) .opening-copy .eyebrow,
+.opening-chapter:not(.is-opening):not(.is-open) .opening-copy > span,
+.opening-chapter:not(.is-opening):not(.is-open) .scene-footer {
+  color: #fff2df;
+  text-shadow: 0 2px 10px #2b140dcc;
 }
 .opening-viewport::after {
   content: "";
@@ -87,12 +109,18 @@
   transform: translate3d(0, var(--envelope-lift), 0);
 }
 .envelope-camera {
-  width: min(74vw, 920px, calc((100svh - 300px) * 1.62));
+  width: var(--envelope-width);
   transform: translateY(1svh);
   transition: transform 1.8s cubic-bezier(0.22, 0.7, 0.2, 1);
 }
+.opening-chapter:not(.is-opening):not(.is-open) .envelope-camera {
+  animation: passage-approach 2.4s cubic-bezier(0.16, 0.78, 0.25, 1) both;
+}
 .envelope-space {
   perspective: 1800px;
+}
+.opening-chapter:not(.is-opening):not(.is-open) .envelope-space {
+  animation: passage-float 4.5s 2.4s ease-in-out infinite;
 }
 .envelope {
   position: relative;
@@ -281,7 +309,7 @@
 }
 .is-opening .envelope-camera,
 .is-open .envelope-camera {
-  transform: translateY(13svh) scale(var(--camera-zoom));
+  transform: translateY(var(--open-envelope-y)) scale(var(--camera-zoom));
 }
 .is-opening .envelope,
 .is-open .envelope {
@@ -318,6 +346,32 @@
   100% {
     opacity: 0;
     transform: translate(-50%, 30%) rotate(22deg) scale(0.88);
+  }
+}
+@keyframes passage-approach {
+  0% {
+    opacity: 0;
+    transform: translateY(-16svh) scale(0.58);
+  }
+  24% {
+    opacity: 0.55;
+  }
+  72% {
+    opacity: 1;
+    transform: translateY(2.2svh) scale(1.025);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(1svh) scale(1);
+  }
+}
+@keyframes passage-float {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-0.7svh) scale(1.008);
   }
 }
 /* The extracted paper becomes the welcome, without a page cut. */
@@ -1009,16 +1063,21 @@
   }
 }
 @media (min-width: 1600px) {
-  .envelope-camera {
-    width: min(76vw, 1100px, calc((100svh - 300px) * 1.62));
+  .opening-viewport {
+    --envelope-width: min(76vw, 1100px, calc((100svh - 300px) * 1.62));
   }
 }
 @media (max-width: 640px) {
   :host {
     --paper-asset: url("/media/stationery/envelope-paper-mobile.webp");
   }
-  .envelope-camera {
-    width: 92vw;
+  .opening-viewport::before {
+    background-position: center center;
+    filter: blur(5px);
+    transform: scale(1.04);
+  }
+  .opening-viewport {
+    --envelope-width: 92vw;
   }
   .envelope {
     aspect-ratio: 1.35;
@@ -1226,7 +1285,11 @@
   }
 }
 /* No pinned distances, hidden content or camera zoom for reduced motion/short screens. */
-@media (prefers-reduced-motion: reduce), (max-height: 600px) {
+@media (prefers-reduced-motion: reduce) {
+  .opening-chapter:not(.is-opening):not(.is-open) .envelope-camera,
+  .opening-chapter:not(.is-opening):not(.is-open) .envelope-space {
+    animation: none;
+  }
   .opening-chapter.is-open,
   .vow-chapter,
   .date-chapter {

@@ -22,13 +22,6 @@
       aria-label="Open our invitation"
     >
       <div class="opening-viewport">
-        <header
-          class="scene-heading"
-          [attr.aria-hidden]="opened() || opening() ? 'true' : null"
-        >
-          <span class="eyebrow">A LETTER TO OUR FAVOURITE PEOPLE</span>
-          <p>{{ config.bride }} <i>&</i> {{ config.groom }}</p>
-        </header>
         <div
           class="envelope-travel"
           [attr.aria-hidden]="opened() ? 'true' : null"
@@ -72,7 +65,7 @@
                     fetchpriority="high"
                     draggable="false"
                 /></span>
-                <span class="envelope-caption">with love, for you</span>
+                <span class="envelope-caption">With love, for you</span>
               </button>
             </div>
           </div>
@@ -81,42 +74,41 @@
           class="invitation-fan"
           [attr.aria-hidden]="!opened() ? 'true' : null"
         >
-          <div class="fan-photo fan-photo-left">
-            <figure class="fan-print">
-              <img
-                src="/media/memories/memory-1.webp"
-                alt="A candid celebration: the couple beneath flowers, with a smiling friend giving two thumbs up."
-                width="720"
-                height="1078"
-                draggable="false"
-              />
-              <figcaption>the joy of being together</figcaption>
+          <div class="keepsake-suite">
+            <article class="keepsake-card">
+              <div class="keepsake-art">
+                <img
+                  src="/media/stationery/save-the-date-card.svg"
+                  alt="Save the date: 27 November 2026."
+                  width="397"
+                  height="559"
+                  draggable="false"
+                />
+              </div>
+            </article>
+            <figure class="keepsake-photo-frame">
+              <div class="keepsake-art">
+                <img
+                  src="/media/stationery/couple-lace-card.svg"
+                  alt="Tasneem and Mostafa, together with their family, invite you to witness their forever."
+                  width="397"
+                  height="559"
+                  draggable="false"
+                />
+              </div>
             </figure>
-          </div>
-          <div class="fan-photo fan-photo-right">
-            <figure class="fan-print">
-              <img
-                src="/media/memories/memory-2.webp"
-                alt="The couple sharing a glance as a friend smiles and gives a thumbs up in front."
-                width="720"
-                height="1078"
-                draggable="false"
-              />
-              <figcaption>our favourite kind of memories</figcaption>
-            </figure>
-          </div>
-          <div class="fan-note-travel">
-            <div class="fan-note">
-              <p class="eyebrow">WE’RE GETTING MARRIED</p>
-              <p class="fan-names">
-                {{ config.bride }}<i>&</i>{{ config.groom }}
-              </p>
-              <span class="fan-rule"></span>
-              <p class="fan-date">{{ config.shortDate }}</p>
-              <p class="fan-signoff">and you’re part of our story</p>
-            </div>
+            <img
+              class="keepsake-bouquet"
+              src="/media/stationery/burgundy-ivory-bouquet.webp"
+              alt=""
+              width="1024"
+              height="1536"
+              aria-hidden="true"
+              draggable="false"
+            />
           </div>
         </div>
+        <div class="envelope-pocket-overlay" aria-hidden="true"></div>
         @if (opened()) {
           <div class="welcome-layer">
             <div class="welcome-frame">

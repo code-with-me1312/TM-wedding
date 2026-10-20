@@ -84,6 +84,7 @@ export class InvitationComponent {
   private focusTimer: ReturnType<typeof setTimeout> | undefined;
   private originalOverflow = "";
   private openingTimer: ReturnType<typeof setTimeout> | undefined;
+  private openingResize: ResizeObserver | undefined;
   constructor() {
     void this.load();
     const timer = setInterval(
@@ -94,6 +95,7 @@ export class InvitationComponent {
       clearInterval(timer);
       clearTimeout(this.openingTimer);
       clearTimeout(this.focusTimer);
+      this.openingResize?.disconnect();
       if (this.opening())
         document.documentElement.style.overflow = this.originalOverflow;
       this.audio?.pause();
@@ -154,20 +156,37 @@ export class InvitationComponent {
   }
   open() {
     if (this.opening() || this.opened()) return;
-    const reduced = matchMedia(
-      "(prefers-reduced-motion: reduce), (max-height: 600px)",
-    ).matches;
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const envelope = document.querySelector<HTMLElement>(".envelope");
     const chapter = document.querySelector<HTMLElement>(".opening-chapter");
-    if (envelope && chapter) {
-      const bounds = {
-        width: envelope.offsetWidth,
-        height: envelope.offsetHeight,
+    const viewport = chapter?.querySelector<HTMLElement>(".opening-viewport");
+    const camera = chapter?.querySelector<HTMLElement>(".envelope-camera");
+    const space = chapter?.querySelector<HTMLElement>(".envelope-space");
+    if (camera && space && chapter) {
+      // Hand the current arrival/float pose to the opening animation. Removing
+      // the arrival animation otherwise makes the zoom snap to its final pose.
+      const pose = new DOMMatrixReadOnly(getComputedStyle(camera).transform)
+        .multiply(new DOMMatrixReadOnly(getComputedStyle(space).transform));
+      chapter.style.setProperty("--camera-start-transform", pose.toString());
+      chapter.style.setProperty("--camera-start-opacity", getComputedStyle(camera).opacity);
+    }
+    if (envelope && chapter && viewport) {
+      const syncPocket = () => {
+        // Untransformed dimensions keep the artwork and pocket aligned even
+        // after an orientation change or mobile browser toolbar resize.
+        const width = envelope.offsetWidth;
+        const height = envelope.offsetHeight;
+        if (!width || !height) return;
+        const sceneHeight = reduced ? innerHeight : viewport.clientHeight;
+        const zoom = Math.max(viewport.clientWidth / width, sceneHeight / height) * 1.08;
+        chapter.style.setProperty("--camera-zoom", String(zoom));
+        chapter.style.setProperty("--pocket-width", `${width * zoom}px`);
+        chapter.style.setProperty("--pocket-height", `${height * zoom}px`);
       };
-      // A camera move sized to the actual viewport, including tall phones.
-      const zoom =
-        Math.max(innerWidth / bounds.width, innerHeight / bounds.height) * 1.08;
-      chapter.style.setProperty("--camera-zoom", String(zoom));
+      syncPocket();
+      this.openingResize = new ResizeObserver(syncPocket);
+      this.openingResize.observe(envelope);
+      this.openingResize.observe(viewport);
     }
     this.originalOverflow = document.documentElement.style.overflow;
     document.documentElement.style.overflow = "hidden";
@@ -196,7 +215,7 @@ export class InvitationComponent {
             ?.focus({ preventScroll: true });
         }, 0);
       },
-      reduced ? 30 : 2450,
+      reduced ? 30 : 3650,
     );
   }
   continueStory() {
