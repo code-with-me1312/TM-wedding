@@ -52,7 +52,7 @@ import { AuthService } from "../../core/auth.service";
       }
     </form>
     <p class="muted" style="font-size:.8rem;margin-top:1rem">
-      Private access for Tasneem & Mostafa.
+      Private access for Mostafa & Tasneem.
     </p>
   </main>`,
 })

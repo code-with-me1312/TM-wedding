@@ -30,7 +30,7 @@ for (const viewport of [
     await page.setViewportSize(viewport);
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.goto("/preview");
-    await page.getByRole("button", { name: "Open Tasneem" }).waitFor();
+    await page.getByRole("button", { name: "Open Mostafa" }).waitFor();
     await expect
       .poll(async () =>
         page
@@ -58,7 +58,7 @@ for (const viewport of [
     await page.screenshot({
       path: `test-results/orange-envelope-${viewport.width}.png`,
     });
-    await page.getByRole("button", { name: "Open Tasneem" }).click();
+    await page.getByRole("button", { name: "Open Mostafa" }).click();
     await expect(page.locator(".opening-chapter")).toHaveClass(/is-opening/);
     // Arrival/float animation must hand its pose to the opening zoom rather
     // than instantly switching to the full-size envelope.
@@ -160,7 +160,7 @@ test("reduced motion has no scroll runway or invisible content", async ({
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/preview");
-  await page.getByRole("button", { name: "Open Tasneem" }).click();
+  await page.getByRole("button", { name: "Open Mostafa" }).click();
   await expect(page.locator("#welcome-heading")).toBeFocused();
   await expect(page.locator(".welcome-frame h1")).toHaveCSS("opacity", "1");
   const height = await page

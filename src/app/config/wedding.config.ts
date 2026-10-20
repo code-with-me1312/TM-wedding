@@ -43,7 +43,7 @@ export const wedding: WeddingConfig = {
   music: null,
   photos: [],
   whatsappTemplate:
-    "Dear {name},\n\nTasneem & Mostafa would love for you to celebrate their wedding with them. ❤️\n\nOpen your invitation:\n{url}",
+    "Dear {name},\n\nMostafa & Tasneem would love for you to celebrate their wedding with them. ❤️\n\nOpen your invitation:\n{url}",
   theme: {
     burgundy: "#884222",
     ivory: "#f8efdf",

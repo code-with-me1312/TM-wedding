@@ -136,7 +136,7 @@ export class InvitationComponent {
         );
         if (!this.invitation())
           this.error.set(
-            "This invitation could not be found. Please ask Tasneem or Mostafa to resend your private link.",
+            "This invitation could not be found. Please ask Mostafa or Tasneem to resend your private link.",
           );
       }
       const r = this.invitation()?.rsvp;
@@ -250,7 +250,7 @@ export class InvitationComponent {
       `DTSTAMP:${stamp(new Date().toISOString())}`,
       `DTSTART:${stamp(this.config.date)}`,
       `DTEND:${stamp(this.config.endDate)}`,
-      `SUMMARY:${escape(`${this.config.bride} & ${this.config.groom}'s Wedding`)}`,
+      `SUMMARY:${escape(`${this.config.groom} & ${this.config.bride}'s Wedding`)}`,
       `LOCATION:${escape(`${this.config.venue}, ${this.config.address}`)}`,
       `DESCRIPTION:${escape(this.config.invitationMessage)}`,
       "END:VEVENT",
@@ -261,7 +261,7 @@ export class InvitationComponent {
     );
     const link = document.createElement("a");
     link.href = url;
-    link.download = "tasneem-and-mostafa-wedding.ics";
+    link.download = "mostafa-and-tasneem-wedding.ics";
     document.body.append(link);
     link.click();
     link.remove();

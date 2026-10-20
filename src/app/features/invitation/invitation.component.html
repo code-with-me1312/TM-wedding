@@ -32,7 +32,7 @@
                 class="envelope"
                 (click)="open()"
                 [disabled]="opening() || opened()"
-                aria-label="Open Tasneem and Mostafa’s wedding invitation"
+                aria-label="Open Mostafa and Tasneem’s wedding invitation"
               >
                 <span class="envelope-back"></span>
                 <span class="invitation-card" aria-hidden="true"></span>
@@ -90,7 +90,7 @@
               <div class="keepsake-art">
                 <img
                   src="/media/stationery/couple-lace-card.svg"
-                  alt="Tasneem and Mostafa, together with their family, invite you to witness their forever."
+                  alt="Mostafa and Tasneem, together with their family, invite you to witness their forever."
                   width="397"
                   height="559"
                   draggable="false"
@@ -127,9 +127,9 @@
                 }
               </p>
               <h1 id="welcome-heading" tabindex="-1">
-                <span class="bride-name">{{ config.bride }}</span
+                <span class="groom-name">{{ config.groom }}</span
                 ><span class="ampersand">&</span
-                ><span class="groom-name">{{ config.groom }}</span>
+                ><span class="bride-name">{{ config.bride }}</span>
               </h1>
               <div class="welcome-ending">
                 <div class="date-rule">
@@ -390,7 +390,7 @@
                 </select>
               }
               <label for="message"
-                >Leave a message for {{ config.bride }} & {{ config.groom }}
+                >Leave a message for {{ config.groom }} & {{ config.bride }}
                 <span class="muted">(optional)</span></label
               ><textarea
                 id="message"
@@ -431,7 +431,7 @@
         <span class="ornament" aria-hidden="true">❦</span>
         <p>{{ config.closingMessage }}</p>
         <span class="eyebrow">WITH LOVE, ALWAYS</span>
-        <h2>{{ config.bride }} <i>&</i> {{ config.groom }}</h2>
+        <h2>{{ config.groom }} <i>&</i> {{ config.bride }}</h2>
         <span class="monogram">TM</span>
         <p class="eyebrow">{{ config.shortDate }}</p>
       </section>

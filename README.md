@@ -1,6 +1,6 @@
 # TM Wedding
 
-A mobile-first Angular invitation for **Tasneem & Mostafa**, 27 November 2026 at 6 PM, Mountain Rose, 6 October City, Egypt. Creamy ivory stationery, a burnt-orange envelope with a chocolate-brown TM seal, a responsive invitation, live countdown, private RSVP links, and a protected host guestbook.
+A mobile-first Angular invitation for **Mostafa & Tasneem**, 27 November 2026 at 6 PM, Mountain Rose, 6 October City, Egypt. Creamy ivory stationery, a burnt-orange envelope with a chocolate-brown TM seal, a responsive invitation, live countdown, private RSVP links, and a protected host guestbook.
 
 ## Run locally
 
@@ -78,7 +78,7 @@ Later, Firebase Console → Hosting → Add custom domain, follow ownership veri
 
 Edit `src/app/config/wedding.config.ts` to change names, date/time, venue, address, map link, messages, theme colors, WhatsApp template, photos or music. Date labels and the ISO countdown target are explicit so the presentation is fully controllable; update them together. The target is `2026-11-27T18:00:00+02:00` (16:00 UTC; Egypt winter time). The timer clamps at zero and changes its message after the wedding.
 
-Photos: add up to two `.webp`/`.avif`/JPEG files to `public/media`, preferably under 200 KB each and about 800–1200 pixels wide. Set e.g. `photos: [{src: '/media/couple.webp', alt: 'Tasneem and Mostafa together'}]`. They load lazily. No stock couple is presented as the actual couple; the design is complete without photos.
+Photos: add up to two `.webp`/`.avif`/JPEG files to `public/media`, preferably under 200 KB each and about 800–1200 pixels wide. Set e.g. `photos: [{src: '/media/couple.webp', alt: 'Mostafa and Tasneem together'}]`. They load lazily. No stock couple is presented as the actual couple; the design is complete without photos.
 
 Music: a documented empty placeholder is intentional. Add a licensed instrumental recording as `public/media/our-song.mp3` and set `music: '/media/our-song.mp3'`. See `public/media/README.md`. There is no audio request before the envelope tap. Playback starts at 25% volume, loops, and has a floating mute/play control. A browser/audio failure does not block the invitation.
 

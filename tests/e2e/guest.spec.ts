@@ -1,11 +1,11 @@
 import { test, expect } from "@playwright/test";
 test("keyboard opening, RSVP, change and return", async ({ page }) => {
   await page.goto("/preview");
-  await page.getByRole("button", { name: "Open Tasneem" }).focus();
+  await page.getByRole("button", { name: "Open Mostafa" }).focus();
   await page.keyboard.press("Enter");
   await expect(
     page.getByRole("heading", {
-      name: "Tasneem & Mostafa",
+      name: "Mostafa & Tasneem",
       exact: true,
       level: 1,
     }),
@@ -18,7 +18,7 @@ test("keyboard opening, RSVP, change and return", async ({ page }) => {
     page.getByText("We can't wait to celebrate with you."),
   ).toBeVisible();
   await page.reload();
-  await page.getByRole("button", { name: "Open Tasneem" }).click();
+  await page.getByRole("button", { name: "Open Mostafa" }).click();
   await expect(page.getByLabel("Joyfully accept")).toBeChecked();
   await page.getByLabel("Regretfully decline").check();
   await page.getByRole("button", { name: "Update my response" }).click();
@@ -38,7 +38,7 @@ test("mobile invitation fits the screen and honors reduced motion", async ({
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/preview");
-  await page.getByRole("button", { name: "Open Tasneem" }).click();
+  await page.getByRole("button", { name: "Open Mostafa" }).click();
   await expect(page.locator("#welcome-heading")).toBeFocused();
   expect(
     await page.evaluate(
@@ -59,7 +59,7 @@ test("desktop, tablet and narrow mobile layouts remain within viewport", async (
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("/preview");
     await expect(
-      page.getByRole("button", { name: "Open Tasneem" }),
+      page.getByRole("button", { name: "Open Mostafa" }),
     ).toBeVisible();
     expect(
       await page.evaluate(
@@ -68,7 +68,7 @@ test("desktop, tablet and narrow mobile layouts remain within viewport", async (
     ).toBe(true);
     if (width === 1440)
       await page.screenshot({ path: "test-results/desktop-envelope.png" });
-    await page.getByRole("button", { name: "Open Tasneem" }).click();
+    await page.getByRole("button", { name: "Open Mostafa" }).click();
     await expect(page.locator("#welcome-heading")).toBeVisible();
     expect(
       await page.evaluate(
@@ -93,7 +93,7 @@ test("compact laptop opening stays clear and calendar downloads", async ({
   const prompt = await page.locator(".opening-copy").boundingBox();
   expect(envelope!.y).toBeGreaterThan(heading!.y + heading!.height);
   expect(envelope!.y + envelope!.height).toBeLessThan(prompt!.y);
-  await page.getByRole("button", { name: "Open Tasneem" }).click();
+  await page.getByRole("button", { name: "Open Mostafa" }).click();
   const defaultBlue = await page
     .locator("a")
     .evaluateAll((links) =>
@@ -104,6 +104,6 @@ test("compact laptop opening stays clear and calendar downloads", async ({
   const download = page.waitForEvent("download");
   await page.getByRole("button", { name: "Add to calendar" }).click();
   expect((await download).suggestedFilename()).toBe(
-    "tasneem-and-mostafa-wedding.ics",
+    "mostafa-and-tasneem-wedding.ics",
   );
 });

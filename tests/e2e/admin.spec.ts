@@ -40,7 +40,7 @@ test("emulator: admin CRUD, private guest RSVP, statistics and revocation", asyn
   const context = await browser.newContext({ reducedMotion: "reduce" });
   const guest = await context.newPage();
   await guest.goto(url!);
-  await guest.getByRole("button", { name: "Open Tasneem" }).click();
+  await guest.getByRole("button", { name: "Open Mostafa" }).click();
   await expect(
     guest.getByText("Dear QA Ahmed & Sara,", { exact: true }),
   ).toBeVisible();
@@ -54,7 +54,7 @@ test("emulator: admin CRUD, private guest RSVP, statistics and revocation", asyn
     guest.getByText("We can't wait to celebrate with you."),
   ).toBeVisible();
   await guest.reload();
-  await guest.getByRole("button", { name: "Open Tasneem" }).click();
+  await guest.getByRole("button", { name: "Open Mostafa" }).click();
   await expect(guest.getByLabel("Joyfully accept")).toBeChecked();
   await expect(guest.locator("#attending-count option:checked")).toHaveText(
     "2 guests",
