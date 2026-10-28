@@ -88,7 +88,7 @@
 }
 .scene-heading p {
   font:
-    clamp(1.4rem, 2.5vw, 2rem) Georgia,
+    clamp(1.4rem, 2.5vw, 2rem) "Lora",
     serif;
   margin-top: 0.6rem;
 }
@@ -236,7 +236,7 @@
   right: 0;
   text-align: center;
   font:
-    italic clamp(0.85rem, 1.4vw, 1.15rem) Georgia,
+    italic clamp(0.85rem, 1.4vw, 1.15rem) "Lora",
     serif;
   letter-spacing: 0.08em;
   color: #edd0a5;
@@ -263,7 +263,7 @@
 }
 .card-monogram {
   font:
-    clamp(3rem, 7vw, 5.5rem) Georgia,
+    clamp(3rem, 7vw, 5.5rem) "Lora",
     serif;
   letter-spacing: -0.18em;
   padding-right: 0.18em;
@@ -289,7 +289,7 @@
 }
 .opening-copy > span {
   font:
-    italic 1.15rem Georgia,
+    italic 1.15rem "Lora",
     serif;
   color: var(--chocolate);
 }
@@ -414,7 +414,7 @@
 }
 .guest-name {
   font:
-    italic clamp(1rem, 2.3vw, 1.4rem) Georgia,
+    italic clamp(1rem, 2.3vw, 1.4rem) "Lora",
     serif;
   color: #7d6248;
   margin: 3svh 0 2svh;
@@ -424,9 +424,9 @@
 }
 .welcome-frame h1 {
   font:
-    clamp(4.4rem, 12vw, 10rem)/0.78 Georgia,
-    serif;
-  letter-spacing: -0.065em;
+    clamp(4.4rem, 12vw, 10rem)/0.98 "Parisienne",
+    cursive;
+  letter-spacing: 0;
   color: var(--orange);
   outline: none;
   opacity: var(--names-opacity);
@@ -439,8 +439,8 @@
 .ampersand {
   display: block;
   font:
-    italic 0.44em/1 Georgia,
-    serif;
+    0.44em/1 "Parisienne",
+    cursive;
   margin: 0.14em 0;
   color: var(--chocolate);
   opacity: var(--names-opacity);
@@ -457,7 +457,7 @@
   margin: 4svh auto 2svh;
 }
 .date-rule p {
-  font-size: 0.85rem;
+  font-size: 1.2rem;
   letter-spacing: 0.25em;
 }
 .date-rule > span {
@@ -467,7 +467,7 @@
 }
 .welcome-note {
   font:
-    italic 1rem/1.7 Georgia,
+    italic 1rem/1.7 "Lora",
     serif;
   color: #796954;
 }
@@ -570,10 +570,8 @@
   color: var(--ivory);
   --line-0: 0;
   --line-1: 0;
-  --line-2: 0;
   --line-y-0: 65px;
   --line-y-1: 65px;
-  --line-y-2: 65px;
   --vow-copy: 0;
   --vow-copy-y: 30px;
 }
@@ -599,7 +597,7 @@
 }
 .vow-title {
   font:
-    clamp(3.3rem, 8.7vw, 8.8rem)/1.02 Georgia,
+    clamp(3.3rem, 8.7vw, 8.8rem)/1.02 "Lora",
     serif;
   letter-spacing: -0.055em;
 }
@@ -613,10 +611,6 @@
 .line-1 {
   opacity: calc(0.18 + var(--line-1) * 0.82);
   transform: translateY(var(--line-y-1));
-}
-.line-2 {
-  opacity: calc(0.18 + var(--line-2) * 0.82);
-  transform: translateY(var(--line-y-2));
   color: #dfab77;
 }
 .vow-bottom {
@@ -631,7 +625,7 @@
 }
 .small-script {
   font:
-    italic clamp(1rem, 1.8vw, 1.3rem)/1.6 Georgia,
+    italic clamp(1rem, 1.8vw, 1.3rem)/1.6 "Lora",
     serif;
   color: #dfab77;
   margin-top: 1rem;
@@ -641,8 +635,10 @@
   right: -0.03em;
   top: -0.03em;
   font:
-    italic 95svh/1 Georgia,
+    70svh/1 "Lora",
     serif;
+  letter-spacing: -0.24em;
+  padding-right: 0.24em;
   color: #d4c3a2;
   opacity: 0.035;
   transform: translateY(var(--watermark-y, 0px));
@@ -718,7 +714,7 @@
 .day-number {
   display: block;
   font:
-    clamp(6rem, 12vw, 10rem)/1 Georgia,
+    clamp(6rem, 12vw, 10rem)/1 "Lora",
     serif;
   color: var(--orange);
   margin: 1rem 0;
@@ -738,7 +734,7 @@
 }
 .date-stationery .venue-name {
   font:
-    clamp(1.7rem, 2.7vw, 2.5rem) Georgia,
+    clamp(1.7rem, 2.7vw, 2.5rem) "Lora",
     serif;
   margin: 0.7rem 0;
 }
@@ -801,7 +797,7 @@
 }
 .countdown span {
   font:
-    clamp(2.6rem, 6vw, 5.8rem) Georgia,
+    clamp(2.6rem, 6vw, 5.8rem) "Lora",
     serif;
 }
 .countdown small {
@@ -819,41 +815,14 @@
   gap: 8vw;
 }
 .venue-art {
-  background: var(--sage);
+  background: url("/media/golden-wedding-archway.webp") center 44% / cover no-repeat;
   border: 1px solid #d4c3a280;
   outline: 10px solid #78867530;
   aspect-ratio: 0.86;
   border-radius: 50% 50% 0 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  width: 100%;
   box-shadow: inset 0 0 0 12px #f8efdf15;
   transform: translateY(var(--reveal-y, 0px)) rotate(var(--art-rotate, 0deg));
-}
-.venue-initial {
-  font:
-    italic clamp(5rem, 10vw, 9rem) Georgia,
-    serif;
-  letter-spacing: -0.3em;
-  padding-right: 0.2em;
-  color: var(--ivory);
-}
-.venue-initial span {
-  font-size: 0.7em;
-  vertical-align: sub;
-}
-.venue-art .eyebrow {
-  margin-top: 2rem;
-  color: var(--ivory);
-}
-.venue-coordinate {
-  font:
-    italic 0.85rem Georgia,
-    serif;
-  margin: 1rem;
-  text-align: center;
-  color: var(--ivory);
 }
 .location-copy {
   opacity: var(--reveal, 1);
@@ -986,7 +955,7 @@
 }
 .ornament {
   font:
-    3rem Georgia,
+    3rem "Lora",
     serif;
   color: var(--orange);
   display: block;
@@ -997,10 +966,12 @@
   margin: 0 auto 3rem;
   color: #79624c;
   font:
-    italic 1.25rem/1.8 Georgia,
+    italic 1.25rem/1.8 "Lora",
     serif;
 }
 .closing h2 {
+  font-family: "Parisienne", cursive;
+  letter-spacing: 0;
   font-size: clamp(2rem, 5vw, 4rem);
   color: var(--orange);
   margin: 1.3rem 0 3rem;
@@ -1263,9 +1234,6 @@
     max-width: 330px;
     width: 100%;
     margin: auto;
-  }
-  .venue-initial {
-    font-size: 6.5rem;
   }
   .rsvp-section h2 {
     font-size: 2.5rem;

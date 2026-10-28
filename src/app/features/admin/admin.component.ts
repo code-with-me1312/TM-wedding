@@ -40,9 +40,7 @@ export class AdminComponent {
     const s = statistics(this.invitations());
     return [
       { label: "Invitations", value: s.total },
-      { label: "People invited", value: s.invited },
       { label: "Confirmed invitations", value: s.confirmed },
-      { label: "Confirmed guests", value: s.headcount },
       { label: "Declined", value: s.declined },
       { label: "Awaiting reply", value: s.pending },
       { label: "Opened", value: s.opened },
@@ -59,15 +57,6 @@ export class AdminComponent {
     displayName: new FormControl("", {
       nonNullable: true,
       validators: [Validators.required, Validators.maxLength(120)],
-    }),
-    invitedCount: new FormControl(1, {
-      nonNullable: true,
-      validators: [
-        Validators.required,
-        Validators.min(1),
-        Validators.max(100),
-        Validators.pattern(/^\d+$/),
-      ],
     }),
   });
   constructor() {
@@ -88,15 +77,12 @@ export class AdminComponent {
   }
   create() {
     this.editing.set(null);
-    this.form.reset({ displayName: "", invitedCount: 1 });
+    this.form.reset({ displayName: "" });
     this.showForm.set(true);
   }
   edit(i: Invitation) {
     this.editing.set(i);
-    this.form.reset({
-      displayName: i.displayName,
-      invitedCount: i.invitedCount,
-    });
+    this.form.reset({ displayName: i.displayName });
     this.showForm.set(true);
   }
   async save() {
@@ -111,16 +97,8 @@ export class AdminComponent {
     try {
       const editing = this.editing();
       if (editing)
-        await this.service.edit(
-          editing,
-          value.displayName.trim(),
-          Number(value.invitedCount),
-        );
-      else
-        await this.service.create(
-          value.displayName.trim(),
-          Number(value.invitedCount),
-        );
+        await this.service.edit(editing, value.displayName.trim());
+      else await this.service.create(value.displayName.trim());
       this.showForm.set(false);
       this.notice.set(
         editing

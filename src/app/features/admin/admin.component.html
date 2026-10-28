@@ -60,23 +60,14 @@
             formControlName="displayName"
             maxlength="120"
             placeholder="Ahmed & Sara"
-            required /></label
-        ><label
-          >People invited<input
-            type="number"
-            formControlName="invitedCount"
-            min="1"
-            max="100"
-            step="1"
-            required
-        /></label>
+            required /></label>
         <p class="muted">
           Use a first name, couple, or family name. The private link is
           generated automatically.
         </p>
         @if (form.invalid && form.touched) {
           <p class="form-error">
-            Enter a name and a whole guest count from 1 to 100.
+            Enter a guest or display name.
           </p>
         }
         <div class="actions">
@@ -130,10 +121,8 @@
         <thead>
           <tr>
             <th scope="col">Guest</th>
-            <th scope="col">Invited</th>
             <th scope="col">Response</th>
             <th scope="col">Opened</th>
-            <th scope="col">Attending</th>
             <th scope="col">Message & dates</th>
             <th scope="col">Invitation</th>
           </tr>
@@ -148,7 +137,6 @@
                   ><button (click)="deleting.set(guest)">Delete</button>
                 </div>
               </td>
-              <td>{{ guest.invitedCount }}</td>
               <td>
                 <span
                   class="status"
@@ -168,7 +156,6 @@
                   }}</small>
                 }
               </td>
-              <td>{{ guest.rsvp.attendingCount }}</td>
               <td class="message-cell">
                 <p>{{ guest.rsvp.message || "—" }}</p>
                 <small>Created {{ guest.createdAt | date: "mediumDate" }}</small
@@ -205,7 +192,7 @@
             </tr>
           } @empty {
             <tr>
-              <td colspan="7" class="empty">
+              <td colspan="5" class="empty">
                 {{
                   invitations().length
                     ? "No invitations match your search."

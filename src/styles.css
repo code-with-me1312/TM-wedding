@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Parisienne&display=swap");
 @import "tailwindcss";
 @theme {
   --color-burgundy: #884222;
@@ -14,7 +15,7 @@
   --sage: #788675;
   --ink: #583426;
   --muted: #796954;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Lora", Georgia, serif;
   color: var(--ink);
   background: var(--ivory);
   font-synthesis: none;
@@ -71,7 +72,7 @@ p {
 h1,
 h2,
 h3 {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Lora", Georgia, serif;
   font-weight: 400;
 }
 h2 {
@@ -83,7 +84,7 @@ p {
   line-height: 1.8;
 }
 i {
-  font-family: Georgia, serif;
+  font-family: "Lora", Georgia, serif;
   font-weight: 400;
 }
 .eyebrow {
@@ -93,7 +94,7 @@ i {
   line-height: 1.8;
 }
 .monogram {
-  font-family: Georgia, serif;
+  font-family: "Lora", Georgia, serif;
   letter-spacing: -0.18em;
   padding-right: 0.18em;
   font-size: 2rem;

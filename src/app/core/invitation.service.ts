@@ -78,7 +78,7 @@ export class InvitationService {
       }),
     );
   }
-  async create(displayName: string, invitedCount: number): Promise<string> {
+  async create(displayName: string): Promise<string> {
     requireConnection();
     const token = generateToken();
     const ref = doc(this.db, "invitations", token);
@@ -87,7 +87,7 @@ export class InvitationService {
         throw new Error("Please try creating this invitation again.");
       tx.set(ref, {
         displayName,
-        invitedCount,
+        invitedCount: 1,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
         openedAt: null,
@@ -96,20 +96,11 @@ export class InvitationService {
     });
     return token;
   }
-  async edit(
-    invitation: Invitation,
-    displayName: string,
-    invitedCount: number,
-  ) {
-    if (invitedCount < invitation.rsvp.attendingCount)
-      throw new Error(
-        "Invited count cannot be lower than the existing attending count.",
-      );
+  async edit(invitation: Invitation, displayName: string) {
     requireConnection();
     await withNetworkDeadline(
       updateDoc(doc(this.db, "invitations", invitation.token), {
         displayName,
-        invitedCount,
         updatedAt: serverTimestamp(),
       }),
     );

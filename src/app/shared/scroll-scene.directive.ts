@@ -61,7 +61,7 @@ export class ScrollSceneDirective {
             set("--fan-opacity", 1 - smoothRange(0.16, 0.4, progress));
             set("--scroll-hint", 1 - smoothRange(0.75, 0.95, progress));
           } else if (kind === "vow") {
-            for (let i = 0; i < 3; i++) {
+            for (let i = 0; i < 2; i++) {
               const part = smoothRange(
                 0.04 + i * 0.17,
                 0.33 + i * 0.17,
@@ -70,10 +70,10 @@ export class ScrollSceneDirective {
               set(`--line-${i}`, part);
               set(`--line-y-${i}`, (1 - part) * 65, "px");
             }
-            set("--vow-copy", smoothRange(0.52, 0.8, progress));
+            set("--vow-copy", smoothRange(0.4, 0.72, progress));
             set(
               "--vow-copy-y",
-              (1 - smoothRange(0.52, 0.8, progress)) * 30,
+              (1 - smoothRange(0.4, 0.72, progress)) * 30,
               "px",
             );
             set("--watermark-y", -progress * 80, "px");

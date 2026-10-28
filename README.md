@@ -1,6 +1,6 @@
 # TM Wedding
 
-A mobile-first Angular invitation for **Mostafa & Tasneem**, 27 November 2026 at 6 PM, Mountain Rose, 6 October City, Egypt. Creamy ivory stationery, a burnt-orange envelope with a chocolate-brown TM seal, a responsive invitation, live countdown, private RSVP links, and a protected host guestbook.
+A mobile-first Angular invitation for **Mostafa & Tasneem**, 27 November 2026 at 6 PM, Mountain Rose Hotel, 6 October City, Egypt. Creamy ivory stationery, a burnt-orange envelope with a chocolate-brown TM seal, a responsive invitation, live countdown, private RSVP links, and a protected host guestbook.
 
 ## Run locally
 

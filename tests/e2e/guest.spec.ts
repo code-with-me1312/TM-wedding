@@ -11,7 +11,7 @@ test("keyboard opening, RSVP, change and return", async ({ page }) => {
     }),
   ).toBeVisible();
   await page.getByLabel("Joyfully accept").check();
-  await page.getByLabel("Number attending").selectOption({ label: "2 guests" });
+  await expect(page.getByLabel("Number attending")).toHaveCount(0);
   await page.getByLabel("Leave a message").fill("So happy for you both!");
   await page.getByRole("button", { name: "Send with love" }).click();
   await expect(

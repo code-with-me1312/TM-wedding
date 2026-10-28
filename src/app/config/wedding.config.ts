@@ -33,7 +33,7 @@ export const wedding: WeddingConfig = {
   dateLabel: "Friday, November 27, 2026",
   shortDate: "27 · 11 · 2026",
   time: "6:00 PM",
-  venue: "Mountain Rose",
+  venue: "Mountain Rose Hotel",
   address: "6 October City, Egypt",
   mapsUrl: "https://maps.app.goo.gl/6CV3Kf2958pQxtQo8",
   invitationMessage:

@@ -89,7 +89,7 @@
             <figure class="keepsake-photo-frame">
               <div class="keepsake-art">
                 <img
-                  src="/media/stationery/couple-lace-card.svg"
+                  src="/media/stationery/dark-red-save-the-date.svg"
                   alt="Mostafa and Tasneem, together with their family, invite you to witness their forever."
                   width="397"
                   height="559"
@@ -199,12 +199,13 @@
       <section class="vow-chapter" id="our-invitation" scrollScene="vow">
         <div class="vow-sticky">
           <span class="chapter-label eyebrow">01 — THE INVITATION</span
-          ><span class="vow-watermark" aria-hidden="true">&</span>
+          ><span class="vow-watermark" aria-hidden="true">TM</span>
           <div class="vow-content">
             <h2 class="vow-title">
-              <span class="vow-line line-0">Some things</span
-              ><span class="vow-line line-1">are simply</span
-              ><span class="vow-line line-2"><i>meant to be.</i></span>
+              <span class="vow-line line-0">One life, now</span
+              ><span class="vow-line line-1"
+                ><i>with a shared address</i></span
+              >
             </h2>
             <div class="vow-bottom">
               <p class="invitation-message">{{ config.invitationMessage }}</p>
@@ -290,13 +291,7 @@
         id="location"
         scrollScene="reveal"
       >
-        <div class="venue-art" aria-hidden="true">
-          <span class="venue-initial">M<span>R</span></span
-          ><span class="eyebrow">MOUNTAIN ROSE</span
-          ><span class="venue-coordinate"
-            >A place for a beautiful beginning</span
-          >
-        </div>
+        <div class="venue-art" aria-hidden="true"></div>
         <div class="location-copy">
           <p class="eyebrow">03 — THE PLACE</p>
           <h2>{{ config.venue }}</h2>
@@ -375,20 +370,6 @@
                   Please choose your response.
                 </p>
               }
-              @if (form.controls.status.value === "attending") {
-                <label for="attending-count"
-                  >Number attending
-                  <span class="muted"
-                    >(up to {{ guest.invitedCount }})</span
-                  ></label
-                ><select id="attending-count" formControlName="attendingCount">
-                  @for (count of counts; track count) {
-                    <option [ngValue]="count">
-                      {{ count }} {{ count === 1 ? "guest" : "guests" }}
-                    </option>
-                  }
-                </select>
-              }
               <label for="message"
                 >Leave a message for {{ config.groom }} & {{ config.bride }}
                 <span class="muted">(optional)</span></label
@@ -422,8 +403,8 @@
           }
         } @else {
           <p class="rsvp-intro">
-            Please open the personal invitation link sent to you<br />to let us
-            know you’re coming.
+            We would love to celebrate with you.<br />Please let Mostafa or
+            Tasneem know if you’ll be joining us.
           </p>
         }
       </section>

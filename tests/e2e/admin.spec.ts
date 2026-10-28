@@ -30,7 +30,7 @@ test("emulator: admin CRUD, private guest RSVP, statistics and revocation", asyn
   ).toBeVisible();
   await page.getByRole("button", { name: "New invitation" }).click();
   await page.getByLabel("Guest / display name").fill("QA Ahmed & Sara");
-  await page.getByLabel("People invited", { exact: true }).fill("2");
+  await expect(page.getByLabel("People invited", { exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "Save invitation" }).click();
   const row = page.getByRole("row").filter({ hasText: "QA Ahmed & Sara" });
   await expect(row).toBeVisible();
@@ -45,9 +45,7 @@ test("emulator: admin CRUD, private guest RSVP, statistics and revocation", asyn
     guest.getByText("Dear QA Ahmed & Sara,", { exact: true }),
   ).toBeVisible();
   await guest.getByLabel("Joyfully accept").check();
-  await guest
-    .getByLabel("Number attending")
-    .selectOption({ label: "2 guests" });
+  await expect(guest.getByLabel("Number attending")).toHaveCount(0);
   await guest.getByLabel("Leave a message").fill("Emulator RSVP verified");
   await guest.getByRole("button", { name: "Send with love" }).click();
   await expect(
@@ -56,9 +54,6 @@ test("emulator: admin CRUD, private guest RSVP, statistics and revocation", asyn
   await guest.reload();
   await guest.getByRole("button", { name: "Open Mostafa" }).click();
   await expect(guest.getByLabel("Joyfully accept")).toBeChecked();
-  await expect(guest.locator("#attending-count option:checked")).toHaveText(
-    "2 guests",
-  );
   await page.getByRole("button", { name: "Refresh", exact: true }).click();
   await expect(row.getByText("Attending", { exact: true })).toBeVisible();
   await expect(
@@ -70,7 +65,6 @@ test("emulator: admin CRUD, private guest RSVP, statistics and revocation", asyn
   expect(decodeURIComponent(wa!)).toContain(url!);
   await row.getByRole("button", { name: "Edit", exact: true }).click();
   await page.getByLabel("Guest / display name").fill("QA Hassan Family");
-  await page.getByLabel("People invited", { exact: true }).fill("3");
   await page.getByRole("button", { name: "Save invitation" }).click();
   const edited = page.getByRole("row").filter({ hasText: "QA Hassan Family" });
   await expect(edited).toBeVisible();

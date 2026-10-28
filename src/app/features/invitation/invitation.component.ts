@@ -71,10 +71,6 @@ export class InvitationComponent {
       nonNullable: true,
       validators: [Validators.required],
     }),
-    attendingCount: new FormControl(1, {
-      nonNullable: true,
-      validators: [Validators.min(1)],
-    }),
     message: new FormControl("", {
       nonNullable: true,
       validators: [Validators.maxLength(1000)],
@@ -101,12 +97,6 @@ export class InvitationComponent {
       this.audio?.pause();
     });
   }
-  get counts() {
-    return Array.from(
-      { length: this.invitation()?.invitedCount ?? 1 },
-      (_, i) => i + 1,
-    );
-  }
   async load() {
     this.loading.set(true);
     this.error.set("");
@@ -115,7 +105,7 @@ export class InvitationComponent {
         const demo: Invitation = {
           token: "preview",
           displayName: "Dear friends",
-          invitedCount: 2,
+          invitedCount: 1,
           createdAt: Date.now(),
           updatedAt: Date.now(),
           openedAt: null,
@@ -143,7 +133,6 @@ export class InvitationComponent {
       if (r && r.status !== "pending")
         this.form.patchValue({
           status: r.status,
-          attendingCount: Math.max(1, r.attendingCount),
           message: r.message,
         });
     } catch {
@@ -300,8 +289,7 @@ export class InvitationComponent {
     if (!values.status) return;
     const rsvp: Rsvp = {
       status: values.status,
-      attendingCount:
-        values.status === "attending" ? Number(values.attendingCount) : 0,
+      attendingCount: values.status === "attending" ? 1 : 0,
       message: values.message.trim(),
       updatedAt: Date.now(),
     };
