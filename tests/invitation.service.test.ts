@@ -1,5 +1,10 @@
 import { vi, beforeEach, describe, it, expect } from "vitest";
-const mocks = vi.hoisted(() => ({ get: vi.fn(), update: vi.fn(), db: {} }));
+const mocks = vi.hoisted(() => ({
+  get: vi.fn(),
+  update: vi.fn(),
+  listen: vi.fn(),
+  db: {},
+}));
 vi.mock("@angular/core", () => ({
   Injectable: () => () => {},
   inject: () => ({ db: mocks.db }),
@@ -15,6 +20,7 @@ vi.mock("firebase/firestore", () => ({
   Timestamp: class {},
   collection: vi.fn(),
   getDocs: vi.fn(),
+  onSnapshot: mocks.listen,
   runTransaction: vi.fn(),
   deleteDoc: vi.fn(),
 }));
@@ -53,6 +59,31 @@ describe("Invitation loading and RSVP persistence", () => {
     await expect(new InvitationService().load("a".repeat(64))).rejects.toThrow(
       "offline",
     );
+  });
+  it("streams invitation changes and returns the listener cleanup", () => {
+    const stop = vi.fn();
+    mocks.listen.mockImplementation((_query, onChange) => {
+      onChange({
+        docs: [
+          {
+            id: "a".repeat(64),
+            data: () => ({
+              displayName: "Live guest",
+              invitedCount: 1,
+              openedAt: null,
+              rsvp: emptyRsvp(),
+            }),
+          },
+        ],
+      });
+      return stop;
+    });
+    const onChange = vi.fn();
+    const unsubscribe = new InvitationService().watch(onChange, vi.fn());
+    expect(onChange).toHaveBeenCalledWith([
+      expect.objectContaining({ displayName: "Live guest" }),
+    ]);
+    expect(unsubscribe).toBe(stop);
   });
   it("writes only RSVP and a server timestamp", async () => {
     const invitation = {

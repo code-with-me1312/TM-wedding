@@ -4,6 +4,7 @@ import {
   doc,
   getDocFromServer,
   getDocs,
+  onSnapshot,
   runTransaction,
   serverTimestamp,
   updateDoc,
@@ -56,6 +57,21 @@ export class InvitationService {
     return result.docs
       .map((d) => this.decode(d.id, d.data()))
       .sort((a, b) => b.createdAt - a.createdAt);
+  }
+  watch(
+    onChange: (invitations: Invitation[]) => void,
+    onError: (error: Error) => void,
+  ): () => void {
+    return onSnapshot(
+      collection(this.db, "invitations"),
+      (result) =>
+        onChange(
+          result.docs
+            .map((d) => this.decode(d.id, d.data()))
+            .sort((a, b) => b.createdAt - a.createdAt),
+        ),
+      onError,
+    );
   }
   async saveRsvp(invitation: Invitation, rsvp: Rsvp): Promise<void> {
     if (!validRsvp(rsvp, invitation.invitedCount))

@@ -54,7 +54,6 @@ test("emulator: admin CRUD, private guest RSVP, statistics and revocation", asyn
   await guest.reload();
   await guest.getByRole("button", { name: "Open Mostafa" }).click();
   await expect(guest.getByLabel("Joyfully accept")).toBeChecked();
-  await page.getByRole("button", { name: "Refresh", exact: true }).click();
   await expect(row.getByText("Attending", { exact: true })).toBeVisible();
   await expect(
     row.getByText("Emulator RSVP verified", { exact: true }),

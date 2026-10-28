@@ -1,4 +1,10 @@
-import { Component, computed, inject, signal } from "@angular/core";
+import {
+  Component,
+  computed,
+  DestroyRef,
+  inject,
+  signal,
+} from "@angular/core";
 import { DatePipe } from "@angular/common";
 import { Router, RouterLink } from "@angular/router";
 import {
@@ -26,6 +32,8 @@ export class AdminComponent {
   private service = inject(InvitationService);
   private auth = inject(AuthService);
   private router = inject(Router);
+  private destroy = inject(DestroyRef);
+  private stopWatching: (() => void) | null = null;
   readonly invitations = signal<Invitation[]>([]);
   readonly loading = signal(true);
   readonly busy = signal(false);
@@ -60,20 +68,26 @@ export class AdminComponent {
     }),
   });
   constructor() {
-    void this.refresh();
+    this.destroy.onDestroy(() => this.stopWatching?.());
+    this.refresh();
   }
-  async refresh() {
+  refresh() {
+    this.stopWatching?.();
     this.loading.set(true);
     this.error.set("");
-    try {
-      this.invitations.set(await this.service.list());
-    } catch {
-      this.error.set(
-        "Could not load invitations. Check your connection and administrator access, then retry.",
-      );
-    } finally {
-      this.loading.set(false);
-    }
+    this.stopWatching = this.service.watch(
+      (invitations) => {
+        this.invitations.set(invitations);
+        this.loading.set(false);
+        this.error.set("");
+      },
+      () => {
+        this.loading.set(false);
+        this.error.set(
+          "Live updates stopped. Check your connection and administrator access, then retry.",
+        );
+      },
+    );
   }
   create() {
     this.editing.set(null);
@@ -105,7 +119,6 @@ export class AdminComponent {
           ? "Invitation updated."
           : "Invitation created. Your private link is ready.",
       );
-      await this.refresh();
     } catch (e) {
       this.error.set(
         e instanceof Error && !("code" in e)
@@ -124,7 +137,6 @@ export class AdminComponent {
       await this.service.delete(i.token);
       this.deleting.set(null);
       this.notice.set("Invitation deleted. Its link is no longer valid.");
-      await this.refresh();
     } catch {
       this.error.set("Unable to delete this invitation. Please retry.");
     } finally {
