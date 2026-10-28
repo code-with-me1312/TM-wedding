@@ -638,8 +638,9 @@
   right: -0.03em;
   top: -0.03em;
   font:
-    70svh/1 "Lora",
+    min(70svh, 62vw)/1 "Lora",
     serif;
+  white-space: nowrap;
   letter-spacing: -0.24em;
   padding-right: 0.24em;
   color: #d4c3a2;
