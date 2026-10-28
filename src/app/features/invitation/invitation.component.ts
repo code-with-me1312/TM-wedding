@@ -56,11 +56,9 @@ export class InvitationComponent {
   readonly invitation = signal<Invitation | null>(null);
   readonly opened = signal(false);
   readonly opening = signal(false);
-  readonly playing = signal(false);
   readonly saving = signal(false);
   readonly saved = signal(false);
   readonly saveError = signal("");
-  readonly musicError = signal("");
   readonly remaining = signal(countdown(wedding.date));
   readonly units = ["days", "hours", "minutes", "seconds"];
   readonly preview = this.route.snapshot.routeConfig?.path === "preview";
@@ -76,7 +74,6 @@ export class InvitationComponent {
       validators: [Validators.maxLength(1000)],
     }),
   });
-  private audio: HTMLAudioElement | null = null;
   private focusTimer: ReturnType<typeof setTimeout> | undefined;
   private originalOverflow = "";
   private openingTimer: ReturnType<typeof setTimeout> | undefined;
@@ -94,7 +91,9 @@ export class InvitationComponent {
       this.openingResize?.disconnect();
       if (this.opening())
         document.documentElement.style.overflow = this.originalOverflow;
-      this.audio?.pause();
+      (
+        document.getElementById("background-music") as HTMLAudioElement | null
+      )?.pause();
     });
   }
   async load() {
@@ -192,7 +191,7 @@ export class InvitationComponent {
         .catch(() => {
           /* Opening the invitation must not be blocked by telemetry failure. */
         });
-    void this.toggleMusic();
+    this.startBackgroundMusic();
     this.openingTimer = setTimeout(
       () => {
         this.opened.set(true);
@@ -256,29 +255,15 @@ export class InvitationComponent {
     link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 0);
   }
-  async toggleMusic() {
-    if (!this.config.music) return;
-    if (!this.audio) {
-      this.audio = new Audio(this.config.music);
-      this.audio.loop = true;
-      this.audio.volume = 0.25;
-      this.audio.preload = "none";
-    }
-    if (this.playing()) {
-      this.audio.pause();
-      this.playing.set(false);
-    } else {
-      try {
-        await this.audio.play();
-        this.playing.set(true);
-        this.musicError.set("");
-      } catch {
-        this.playing.set(false);
-        this.musicError.set(
-          "Music is unavailable. You can still enjoy the invitation.",
-        );
-      }
-    }
+  private startBackgroundMusic() {
+    const audio = document.getElementById(
+      "background-music",
+    ) as HTMLAudioElement | null;
+    if (!audio) return;
+    audio.volume = 0.25;
+    void audio.play().catch(() => {
+      /* Some browsers require the seal tap before allowing audible playback. */
+    });
   }
   async submit() {
     if (this.saving()) return;

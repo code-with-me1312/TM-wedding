@@ -40,7 +40,7 @@ export const wedding: WeddingConfig = {
     "Together with our families, we invite you to celebrate the beginning of our forever.",
   closingMessage:
     "The best moments in life are the ones we share. We would be so happy to share this one with you.",
-  music: null,
+  music: "/media/wedding-background.m4a",
   photos: [],
   whatsappTemplate:
     "Dear {name},\n\nMostafa & Tasneem would love for you to celebrate their wedding with them. ❤️\n\nOpen your invitation:\n{url}",

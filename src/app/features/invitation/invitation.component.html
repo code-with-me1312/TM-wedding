@@ -1,3 +1,15 @@
+@if (config.music) {
+  <audio
+    id="background-music"
+    class="background-music"
+    [src]="config.music"
+    [volume]="0.25"
+    preload="auto"
+    autoplay
+    loop
+    aria-hidden="true"
+  ></audio>
+}
 @if (loading()) {
   <main class="state-screen" aria-live="polite">
     <span class="monogram loading-mark">TM</span>
@@ -403,8 +415,7 @@
           }
         } @else {
           <p class="rsvp-intro">
-            We would love to celebrate with you.<br />Please let Mostafa or
-            Tasneem know if you’ll be joining us.
+            We would love to celebrate with you.
           </p>
         }
       </section>
@@ -422,17 +433,5 @@
     <footer class="invitation-footer">
       <span>MADE WITH LOVE, FOR YOU</span><a routerLink="/admin">Hosts</a>
     </footer>
-    @if (config.music) {
-      <button
-        class="music-control"
-        (click)="toggleMusic()"
-        [attr.aria-label]="playing() ? 'Mute music' : 'Play music'"
-      >
-        {{ playing() ? "♫ Music on" : "♪ Music off" }}
-      </button>
-    }
-    @if (musicError()) {
-      <p class="music-notice" role="status">{{ musicError() }}</p>
-    }
   }
 }

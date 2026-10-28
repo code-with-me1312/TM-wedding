@@ -2,6 +2,9 @@
   --paper-asset: url("/media/stationery/envelope-paper.webp");
   display: block;
 }
+.background-music {
+  display: none;
+}
 .invitation-main {
   background: var(--ivory);
 }
