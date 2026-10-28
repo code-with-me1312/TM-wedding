@@ -7,6 +7,7 @@ export interface WeddingConfig {
   shortDate: string;
   time: string;
   venue: string;
+  hall: string;
   address: string;
   mapsUrl: string;
   invitationMessage: string;
@@ -34,6 +35,7 @@ export const wedding: WeddingConfig = {
   shortDate: "27 · 11 · 2026",
   time: "6:00 PM",
   venue: "Mountain Rose Hotel",
+  hall: "One View Hall",
   address: "6 October City, Egypt",
   mapsUrl: "https://maps.app.goo.gl/6CV3Kf2958pQxtQo8",
   invitationMessage:
